@@ -19,7 +19,7 @@ v6 = Vuln("checkKernel","0","0")
 v7 = Vuln("avUpdated","0","0")
 v8 = Vuln("disableAutoLogin","0","0")
 v9 = Vuln("notImplementedYet","0","0")
-v10 = Vuln("noteImplementedYet","0","0")
+v10 = Vuln("notImplementedYet","0","0")
 vulns = [v1,v2,v3,v4,v5,v6,v7,v8,v9,v10]
 
 #######NOT QUITE READY FOR THIS YET##############
@@ -36,6 +36,14 @@ vulns = [v1,v2,v3,v4,v5,v6,v7,v8,v9,v10]
 # lv4 = ListVuln("badProgram","","0","0")
 # listVulns = [lv1,lv2,lv3,lv4]
 
+def writeToConfig(name,points,enabled):
+        if enabled == 1:
+          f = open('csel.cfg','a')
+          line1 = name+'=(y)\n'
+          line2 = name+'Value=('+str(points)+')\n'
+          f.write(line1)
+          f.write(line2)
+
 #What happens when you click Submit?
 def callback():
     #We wanna use those fancy variable lists 
@@ -43,13 +51,14 @@ def callback():
     global vulns
     global pointVal
     global listVulns
-
+    f = open('csel.cfg','w+')
     for vuln,checkEn,score in zip(vulns,checkBoxes,pointVal):
         vuln.enabled = checkEn.get()
         vuln.points = score.get()
         #This is just a stand in. Next up, call a function to write to a file.   
-        print vuln.name,vuln.points,vuln.enabled
-   
+        #print vuln.name,vuln.points,vuln.enabled
+        writeToConfig(vuln.name,vuln.points,vuln.enabled)
+    f.close()
 root = Tk()
 #Initialize a crap-ton of TK vars. Can you find a more elegant way?
 cb01 = IntVar()
