@@ -1,4 +1,4 @@
 checkFirewall=(y)
-checkFirewallValue=(34)
-checkBackdoor=(y)
-checkBackdoorValue=(3)
+checkFirewallValue=(5)
+secureSudoers=(y)
+secureSudoersValue=(8)
