@@ -2,6 +2,17 @@
 
 from Tkinter import *
 
+class ForenQuest:
+    def __init__(self,name,question,answer,points,enabled):
+        self.name = name
+        self.question = question
+        self.answer = answer
+        self.points = points
+        self.enabled = enabled
+
+fq01 = ForenQuest("Question1.txt","Here is my question...","myanswer","0","0")
+fq02 = ForenQuest("Question2.txt","Here is my question...","myanswer","0","0")
+
 #First try at a class. In the future I want to add two more things: type and stringvalue
 #This should allow us to score goodUser, badProgram, etc
 class Vuln:
@@ -32,6 +43,7 @@ v56 = Vuln("badCron","0","0","","","","Check the root cron for a specific string
 v57 = Vuln("badFile","0","0","","","","Score points for deleting this file")
 vulns = [v01,v02,v03,v04,v05,v06,v07,v08,v50,v51,v52,v53,v54,v55,v56,v57]
 
+
 def writeToConfig(name,points,enabled,keywords):
         if enabled == 1:
           f = open('csel.cfg','a')
@@ -43,16 +55,42 @@ def writeToConfig(name,points,enabled,keywords):
           f.write(line1)
           f.write(line2)
           
+#Create the forensics questions and add answers to csel.cfg
+def createForQ():
+    qHeader='This is a forensics question. Answer it below\n------------------------\n'
+    qFooter='\n\nANSWER: <TypeAnswerHere>'
+    f = open('csel.cfg','w+')
+    
+    
+    line1a ='forensicsAnswer1=('+fqans01.get()+')\n'
+    line1b = 'checkForensicsQuestion1Value=('+str(fqpts01.get())+')\n'
+    line2a = 'forensicsAnswer2=('+fqans02.get()+')\n'
+    line2b = 'checkForensicsQuestion2Value=('+str(fqpts02.get())+')\n'
+    if fqcb01.get() != 0:
+        f.write(line1a)
+        f.write(line1b)
+        g = open('Question1.txt','w+')
+        g.write(qHeader+fquest01.get()+qFooter)
+        g.close()
+    if fqcb02.get() != 0:
+        f.write(line2a)
+        f.write(line2b)
+        h = open('Question2.txt','w+')
+        h.write(qHeader+fquest02.get()+qFooter)
+        h.close()
+    f.close()
+    
+   
 
 #What happens when you click Submit?
-def callback():
+def submitCallback():
     #We wanna use those fancy variable lists 
     global checkBoxes
     global vulns
     global pointVal
     global listVulns
     global keyWords
-    f = open('csel.cfg','w+')
+    f = open('csel.cfg','a')
     for vuln,checkEn,score,key in zip(vulns,checkBoxes,pointVal,keyWords):
         vuln.enabled = checkEn.get()
         vuln.points = score.get()
@@ -63,6 +101,16 @@ def callback():
 #######Tkinter Time!!!###############
 root = Tk()
 #Initialize a crap-ton of TK vars. Can you find a more elegant way?
+#Forensic Question stuff
+fqcb01 = IntVar()
+fqpts01 = IntVar()
+fquest01 = StringVar()
+fqans01 = StringVar()
+fqcb02 = IntVar()
+fqpts02 = IntVar()
+fquest02 = StringVar()
+fqans02 = StringVar()
+
 #Checkboxes to enable or disable an item
 cb01 = IntVar()
 cb02 = IntVar()
@@ -124,7 +172,21 @@ keyWords = [kw01,kw02,kw03,kw04,kw05,kw06,kw07,kw08,kw50,kw51,kw52,kw53,kw54,kw5
 
 root.title('CSEL Setup Tool')
 
+
 #Making some boxes
+fqHead1 = Label(root,text="Create?",font=('Verdana',10,'bold'))
+fqHead2 = Label(root,text="Points",font=('Verdana',10,'bold'))
+fqHead3 = Label(root,text="Question",font=('Verdana',10,'bold'))
+fqHead4 = Label(root,text="Answer",font=('Verdana',10,'bold'))
+fqCheckbox01 = Checkbutton(root,text=fq01.name,variable=fqcb01)
+fqPoints01 = Entry(root,textvariable=fqpts01)
+fqQuest01 = Entry(root,textvariable=fquest01)
+fqAns01 = Entry(root,textvariable=fqans01)
+fqCheckbox02 = Checkbutton(root,text=fq02.name,variable=fqcb02)
+fqPoints02 = Entry(root,textvariable=fqpts02)
+fqQuest02 = Entry(root,textvariable=fquest02)
+fqAns02 = Entry(root,textvariable=fqans02)
+createForQ = Button(root,text="Create Forensics Questions",command=createForQ)
 checkbox01 = Checkbutton(root,text=v01.name,variable=cb01)
 points01 = Entry(root,textvariable=pts01)
 label01 = Label(root,text=v01.tip)
@@ -182,7 +244,18 @@ checkbox57 = Checkbutton(root,text=v57.name,variable=cb57)
 points57 = Entry(root,textvariable=pts57)
 keywords57 = Entry(root,textvariable=kw57)
 label57 = Label(root,text=v57.tip)
-submit = Button(root,text='Submit',command=callback)
+submit = Button(root,text='Write to Config',command=submitCallback)
+
+#Pack it up...errr GRID it up!
+fqCheckbox01.grid(row=5,column=1,sticky=W)
+fqPoints01.grid(row=5,column=2)
+fqQuest01.grid(row=5,column=3)
+fqAns01.grid(row=5,column=4) 
+fqCheckbox02.grid(row=6,column=1,sticky=W)
+fqPoints02.grid(row=6,column=2)
+fqQuest02.grid(row=6,column=3)
+fqAns02.grid(row=6,column=4) 
+createForQ.grid(row=7,column=4)
 
 
 #Let's make a table!
@@ -194,37 +267,42 @@ head5 = Label(root,text="Point Value",font=('Verdana',10,'bold'))
 head6 = Label(root,text="Keywords",font=('Verdana',10,'bold'))
 head7 = Label(root,text="Explanation",font=('Verdana',10,'bold'))
 
-head1.grid(row=0,column=1)
-head2.grid(row=0,column=2)
-head3.grid(row=0,column=3)
+fqHead1.grid(row=3,column=1)
+fqHead2.grid(row=3,column=2)
+fqHead3.grid(row=3,column=3)
+fqHead4.grid(row=3,column=4)
+
+head1.grid(row=10,column=1)
+head2.grid(row=10,column=2)
+head3.grid(row=10,column=3)
 head4.grid(row=49,column=1)
 head5.grid(row=49,column=2)
 head6.grid(row=49,column=3)
 head7.grid(row=49,column=4)
-checkbox01.grid(row=1,column=1,sticky=W)
-points01.grid(row=1,column=2)
-label01.grid(row=1,column=3,sticky=W)
-checkbox02.grid(row=2,column=1,sticky=W)
-points02.grid(row=2,column=2)
-label02.grid(row=2,column=3,sticky=W)
-checkbox03.grid(row=3,column=1,sticky=W)
-points03.grid(row=3,column=2)
-label03.grid(row=3,column=3,sticky=W)
-checkbox04.grid(row=4,column=1,sticky=W)
-points04.grid(row=4,column=2)
-label04.grid(row=4,column=3,sticky=W)
-checkbox05.grid(row=5,column=1,sticky=W)
-points05.grid(row=5,column=2)
-label05.grid(row=5,column=3,sticky=W)
-checkbox06.grid(row=6,column=1,sticky=W)
-points06.grid(row=6,column=2)
-label06.grid(row=6,column=3,sticky=W)
-checkbox07.grid(row=7,column=1,sticky=W)
-points07.grid(row=7,column=2)
-label07.grid(row=7,column=3,sticky=W)
-checkbox08.grid(row=8,column=1,sticky=W)
-points08.grid(row=8,column=2)
-label08.grid(row=8,column=3,sticky=W)
+checkbox01.grid(row=11,column=1,sticky=W)
+points01.grid(row=11,column=2)
+label01.grid(row=11,column=3,sticky=W)
+checkbox02.grid(row=12,column=1,sticky=W)
+points02.grid(row=12,column=2)
+label02.grid(row=12,column=3,sticky=W)
+checkbox03.grid(row=13,column=1,sticky=W)
+points03.grid(row=13,column=2)
+label03.grid(row=13,column=3,sticky=W)
+checkbox04.grid(row=14,column=1,sticky=W)
+points04.grid(row=14,column=2)
+label04.grid(row=14,column=3,sticky=W)
+checkbox05.grid(row=15,column=1,sticky=W)
+points05.grid(row=15,column=2)
+label05.grid(row=15,column=3,sticky=W)
+checkbox06.grid(row=16,column=1,sticky=W)
+points06.grid(row=16,column=2)
+label06.grid(row=16,column=3,sticky=W)
+checkbox07.grid(row=17,column=1,sticky=W)
+points07.grid(row=17,column=2)
+label07.grid(row=17,column=3,sticky=W)
+checkbox08.grid(row=18,column=1,sticky=W)
+points08.grid(row=18,column=2)
+label08.grid(row=18,column=3,sticky=W)
 checkbox50.grid(row=50,column=1,sticky=W)
 points50.grid(row=50,column=2)
 keywords50.grid(row=50,column=3)

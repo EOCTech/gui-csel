@@ -1,4 +1,0 @@
-checkFirewall=(y)
-checkFirewallValue=(5)
-secureSudoers=(y)
-secureSudoersValue=(8)
