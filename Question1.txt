@@ -1,5 +1,0 @@
-This is a forensics question. Answer it below
-------------------------
-What color is the sky?
-
-ANSWER: <TypeAnswerHere>
