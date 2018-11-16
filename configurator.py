@@ -99,7 +99,7 @@ def submitCallback():
         vuln.points = score.get()
         vuln.kw = key.get()
         writeToConfig(vuln.name,vuln.points,vuln.enabled,vuln.kw)
-    configFooter="index=("+usrDsktp.get()+"ScoreReport.html)\n#These values will change during install\nimageScore=0\nposPoints=0\nrelease=\"\"\ninitialKernel=(%KERNEL%)\ninstallDate=(%INSTALLDATE%)"
+    configFooter="index=("+usrDsktp.get()+"ScoreReport.html)\n#These values will change during install\nimageScore=0\nposPoints=0\nrelease=\"\"\ninitialKernel=(%KERNEL%)\ninstallDate=(%INSTALLDATE%)\n"
     f.write(configFooter)
     f.close()
 
@@ -197,6 +197,7 @@ kw51 = StringVar()
 kw52 = StringVar()
 kw53 = StringVar()
 kw54 = StringVar()
+
 kw55 = StringVar()
 kw56 = StringVar()
 kw57 = StringVar()
@@ -437,7 +438,6 @@ label83.grid(row=83,column=3,columnspan=2,sticky=W)
 checkbox84.grid(row=84,column=1,sticky=W)
 keywords84.grid(row=84,column=2)
 label84.grid(row=84,column=3,columnspan=2,sticky=W)
-
 submit.grid(row=99,column=3)
 
 root.mainloop()

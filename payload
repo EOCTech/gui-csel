@@ -1,4 +1,3 @@
-#!/bin/bash
 #DO NOT MESS WITH THIS FILE#
 
 addPosPoints(){ #Use: posPoints <Number of possible points being added>
