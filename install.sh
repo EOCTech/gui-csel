@@ -15,8 +15,8 @@ if [[ $(crontab -l -u root | grep csel) ]] ; then :; else
 fi
 
 #Check for CYBER folder, create if it doesn't exist
-echo -e 'DONE\nCreating /home/CYBERPATRIOT directory for icons...'
-if [ ! -d "/home/CYBERPATRIOT_DO_NOT_REMOVE" ]
+echo -e 'DONE\nCreating /etc/CYBERPATRIOT directory for icons...'
+if [ ! -d "/etc/CYBERPATRIOT_DO_NOT_REMOVE" ]
 then
   mkdir /etc/CYBERPATRIOT_DO_NOT_REMOVE
   cp logo.png /etc/CYBERPATRIOT_DO_NOT_REMOVE/logo.png
