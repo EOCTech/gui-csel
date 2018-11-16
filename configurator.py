@@ -59,10 +59,10 @@ def createForQ():
     qHeader='This is a forensics question. Answer it below\n------------------------\n'
     qFooter='\n\nANSWER: <TypeAnswerHere>'
     f = open('csel.cfg','a')  
-    line1a = 'forensicsPath1=('+str(usrDsktp.get())+')\n'
+    line1a = 'forensicsPath1=('+str(usrDsktp.get())+'Question1.txt)\n'
     line1b = 'forensicsAnswer1=('+fqans01.get()+')\n'
     line1c = 'checkForensicsQuestion1Value=('+str(fqpts01.get())+')\n'
-    line2a = 'forensicsPath2=('+str(usrDsktp.get())+')\n'
+    line2a = 'forensicsPath2=('+str(usrDsktp.get())+'Question2.txt)\n'
     line2b = 'forensicsAnswer2=('+fqans02.get()+')\n'
     line2c = 'checkForensicsQuestion2Value=('+str(fqpts02.get())+')\n'
     if fqcb01.get() != 0:
